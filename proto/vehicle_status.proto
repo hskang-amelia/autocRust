@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+package vehicle_status;
+
+service VehicleService {
+    // 단일 차량 상태 조회
+    rpc GetVehicleStatus (VehicleRequest) returns (VehicleStatus);
+    
+    // 실시간 차량 상태 스트리밍
+    rpc StreamVehicleStatus (VehicleStreamRequest) returns (stream VehicleStatus);
+}
+
+message VehicleRequest {
+    int32 id = 1;
+    optional string request_id = 2;  // 요청 추적용 ID
+}
+
+message VehicleStreamRequest {
+    int32 count = 1;
+    optional int32 interval_ms = 2;  // 스트리밍 간격 (밀리초)
+}
+
+message VehicleStatus {
+    string timestamp = 1;
+    int32 id = 2;
+    string status = 3;
+    float speed = 4;
+    double latitude = 5;
+    double longitude = 6;
+    bytes extra_data = 7;
+    //map<string, string> metadata = 8;  // 추가 메타데이터
+}
